@@ -20,7 +20,6 @@
         el.style.margin = ""; // Reset margin
         el.style.backgroundColor = ""; // Reset background color
         el.style.color = ""; // Reset color
-        el.classList.remove("flagged-comment");
     });
     window.flaggedData.flaggedHandles = [];
     window.flaggedData.flaggedComments = [];
@@ -85,7 +84,10 @@
     const commentElement = renderer.querySelector("#content-text");
     const commentText = commentElement?.textContent || "";
 
-    if (!commentText) return;
+    if (!commentText || commentContainer.classList.contains("processed-comment")) return;
+
+    // Mark the comment container as processed
+    commentContainer.classList.add("processed-comment");
 
     const isFlagged = (window.settings.enableRegex && shouldFlagCommentRegex(commentText)) ||
                       (window.settings.enableServer && await checkCommentWithServer(commentText));
