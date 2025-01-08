@@ -39,7 +39,7 @@ def model(text):
 
     proba = F.sigmoid(logits).squeeze(1).item()
 
-    return proba > 0.5
+    return proba > 0.65
 
 if __name__ == "__main__":
     print(model("This is a test string"))

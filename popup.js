@@ -52,21 +52,44 @@ document.addEventListener("DOMContentLoaded", () => {
     toggleExtensionButton.classList.toggle("pressed", isEnabled);
   };
 
+  // const displayFlaggedCommentsCount = () => {
+  //   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+  //     chrome.scripting.executeScript(
+  //       {
+  //         target: { tabId: tabs[0].id },
+  //         func: () => window.flaggedData?.flaggedComments?.length || 0
+  //       },
+  //       (results) => {
+  //         const count = results[0]?.result || 0;
+  //         commentCountElement.textContent = count;
+  //         console.log("popup.js: Total flagged comments:", count);
+  //       }
+  //     );
+  //   });
+  // };
+
   const displayFlaggedCommentsCount = () => {
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-      chrome.scripting.executeScript(
-        {
-          target: { tabId: tabs[0].id },
-          func: () => window.flaggedData?.flaggedComments?.length || 0
-        },
-        (results) => {
-          const count = results[0]?.result || 0;
-          commentCountElement.textContent = count;
-          console.log("popup.js: Total flagged comments:", count);
-        }
-      );
+        chrome.scripting.executeScript(
+            {
+                target: { tabId: tabs[0].id },
+                func: () => ({
+                    flaggedCount: window.flaggedData?.flaggedComments?.length || 0,
+                    totalCount: document.querySelectorAll("ytd-comment-thread-renderer").length || 0,
+                }),
+            },
+            (results) => {
+                const { flaggedCount, totalCount } = results[0]?.result || { flaggedCount: 0, totalCount: 0 };
+                const ratio = totalCount > 0 ? (flaggedCount / totalCount).toFixed(2) : "N/A";
+
+                document.getElementById("comment-count").textContent = flaggedCount;
+                document.getElementById("comment-ratio").textContent = ratio;
+                console.log(`popup.js: Flagged comments: ${flaggedCount}, Total comments: ${totalCount}, Ratio: ${ratio}`);
+            }
+        );
     });
   };
+
 
   const displayFlaggedHandles = () => {
     flaggedListElement.innerHTML = ""; // Clear the previous list

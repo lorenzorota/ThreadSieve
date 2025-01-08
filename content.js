@@ -7,19 +7,28 @@
     };
   }
 
-  let observer = null; // Declare observer at the top level
+  const resetFlaggedData = () => {
+    console.log("content.js: Resetting flagged data and counters");
+    window.flaggedData = {
+        flaggedHandles: [],
+        flaggedComments: [],
+    };
+  };
+
+  let currentUrl = window.location.href;
+  let observer = null;
 
   // Function to undo everything once extension is disabled 
   const removeChanges = () => {
     console.log("content.js: Removing changes applied by the extension");
     const flaggedElements = document.querySelectorAll(".flagged-comment");
     flaggedElements.forEach((el) => {
-        el.style.border = ""; // Reset border
-        el.style.borderRadius = ""; // Reset border radius
-        el.style.padding = ""; // Reset padding
-        el.style.margin = ""; // Reset margin
-        el.style.backgroundColor = ""; // Reset background color
-        el.style.color = ""; // Reset color
+        el.style.border = "";
+        el.style.borderRadius = "";
+        el.style.padding = "";
+        el.style.margin = "";
+        el.style.backgroundColor = "";
+        el.style.color = "";
     });
     window.flaggedData.flaggedHandles = [];
     window.flaggedData.flaggedComments = [];
@@ -141,6 +150,14 @@
             console.log("content.js: Extension is disabled, ignoring mutations.");
             return;
         }
+
+        // Detect URL change
+        if (window.location.href !== currentUrl) {
+          console.log("content.js: URL changed, resetting flagged data.");
+          currentUrl = window.location.href; // Update the current URL
+          resetFlaggedData(); // Reset flagged data and counts
+        }
+
         console.log("content.js: New comments detected, running flagging logic...");
         flagAllComments();
     });
