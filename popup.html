@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ThreadSieve</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div style="display: flex; align-items: center; margin-bottom: 10px;">
+        <img src="media/icon.png" alt="Icon" style="width: 32px; height: 32px; margin-right: 10px;">
+        <h3 style="margin: 0;">ThreadSieve</h3>
+    </div>
+    <p style="font-size: 14px; color: gray;">Detects and flags comments that are deemed unsanitary (or AI-generated)</p>
+
+    <div id="tabs">
+        <button id="tab-overview" class="active">Overview</button>
+        <button id="tab-options">Options</button>
+    </div>
+
+    <div id="frame">
+        <div id="content-overview">
+            <button id="toggle-extension">Enable/Disable Extension</button>
+            <p>Flagged Comments: <span id="comment-count">0</span></p>
+            <button id="show-flagged">Show Flagged Handles</button>
+            <ul id="flagged-list" style="display: none;"></ul>
+        </div>
+
+        <div id="content-options" style="display: none;">
+            <p>Platform Settings</p>
+            <div id="settings-menu">
+                <button id="youtube-settings">YouTube</button>
+            </div>
+        </div>
+
+        <div id="youtube-settings-frame" style="display: none;">
+            <button class="back-button" id="back-to-options">&lt; Back</button>
+            <div id="youtube-settings-content"></div>
+        </div>
+    </div>
+
+    <script src="popup.js"></script>
+</body>
+</html>

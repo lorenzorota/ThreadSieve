@@ -1,0 +1,27 @@
+{
+  "manifest_version": 3,
+  "name": "ThreadSieve",
+  "version": "0.1",
+  "description": "Automatically flags and highlights comments based on conditions.",
+  "permissions": [
+      "storage",
+      "scripting",
+      "activeTab"
+  ],
+  "host_permissions": [
+      "https://www.youtube.com/*"
+  ],
+  "content_scripts": [
+      {
+          "matches": ["https://www.youtube.com/watch*"],
+          "js": ["content.js"]
+      }
+  ],
+  "background": {
+      "service_worker": "background.js"
+  },
+  "action": {
+      "default_popup": "popup.html",
+      "default_icon": "media/icon.png"
+  }
+}
